@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Danny | Applications Developer</title>
+  <meta name="description" content="Danny is an applications developer building high-performance mobile and web solutions with Flutter, Supabase and AI integration." />
+  <meta name="theme-color" content="#060B1F" />
+
+  <!-- Inter (falls back to system UI if the font can't load) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+          },
+          colors: {
+            navy: { 950: '#060B1F', 900: '#0A1230', 800: '#0F1A40', 700: '#16225A' },
+            charcoal: { 900: '#14171F', 800: '#1B1F2A', 700: '#262B38', 600: '#343A4A', 400: '#8B93A7' },
+            electric: { DEFAULT: '#2F6BFF', 300: '#8FB0FF', 400: '#5A8BFF', 600: '#1F55E0' },
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    :root { --electric: #2F6BFF; }
+    html { scroll-padding-top: 5rem; }
+    body { background: #060B1F; color: #E6ECFF; font-family: Inter, ui-sans-serif, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+
+    /* Blueprint grid used behind the hero */
+    .grid-bg {
+      background-image:
+        linear-gradient(to right, rgba(143,176,255,.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(143,176,255,.08) 1px, transparent 1px);
+      background-size: 48px 48px;
+      -webkit-mask-image: radial-gradient(ellipse 80% 70% at 60% 30%, #000 30%, transparent 75%);
+              mask-image: radial-gradient(ellipse 80% 70% at 60% 30%, #000 30%, transparent 75%);
+    }
+
+    /* Glowing call-to-action */
+    .glow-btn {
+      background: var(--electric);
+      color: #fff;
+      box-shadow: 0 0 0 1px rgba(143,176,255,.35), 0 0 22px rgba(47,107,255,.55), 0 0 56px rgba(47,107,255,.25);
+      transition: box-shadow .25s ease, transform .25s ease, background .25s ease;
+    }
+    .glow-btn:hover { background: #4477ff; box-shadow: 0 0 0 1px rgba(143,176,255,.6), 0 0 30px rgba(47,107,255,.8), 0 0 80px rgba(47,107,255,.4); transform: translateY(-1px); }
+    .glow-btn:active { transform: translateY(0); }
+
+    /* Visible keyboard focus everywhere */
+    a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+      outline: 2px solid #8FB0FF; outline-offset: 3px; border-radius: 8px;
+    }
+
+    /* Phone frame used for every app mockup */
+    .phone {
+      position: relative; padding: 8px; border-radius: 40px;
+      background: linear-gradient(160deg, #343A4A, #14171F);
+      box-shadow: 0 30px 60px -20px rgba(0,0,0,.7), inset 0 0 0 1px rgba(255,255,255,.08);
+    }
+    .phone::before {
+      content: ""; position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+      width: 30%; height: 18px; border-radius: 999px; background: #060B1F; z-index: 2;
+    }
+    .phone-screen { border-radius: 32px; overflow: hidden; aspect-ratio: 1 / 2; background: #0E1736; }
+    .phone-screen svg, .phone-screen img { width: 100%; height: 100%; display: block; object-fit: cover; }
+
+    /* Hero load sequence: one orchestrated entrance, skipped for reduced motion */
+    @media (prefers-reduced-motion: no-preference) {
+      .rise { opacity: 0; transform: translateY(16px); animation: rise .8s cubic-bezier(.2,.7,.2,1) forwards; }
+      .rise.d1 { animation-delay: .05s; } .rise.d2 { animation-delay: .18s; }
+      .rise.d3 { animation-delay: .3s; }  .rise.d4 { animation-delay: .42s; }
+      .rise.d5 { animation-delay: .55s; }
+      @keyframes rise { to { opacity: 1; transform: none; } }
+    }
+
+    .field {
+      width: 100%; background: #0A1230; border: 1px solid #343A4A; color: #E6ECFF;
+      border-radius: 12px; padding: .85rem 1rem; font-size: 1rem; transition: border-color .2s, box-shadow .2s;
+    }
+    .field::placeholder { color: #6E778D; }
+    .field:hover { border-color: #4a526a; }
+    .field:focus { border-color: #2F6BFF; box-shadow: 0 0 0 3px rgba(47,107,255,.25); outline: none; }
+
+    .tile { transition: border-color .2s ease, background .2s ease; }
+    .tile:hover { border-color: rgba(47,107,255,.7); background: #131a33; }
+  </style>
+</head>
+
+<body class="antialiased">
+
+  <!-- =========================================================
+       Reusable app-screen placeholders (inline SVG).
+       These fill the phone mockups until you add real images.
+       To use your own screenshots, see the CONFIG block at the
+       bottom of this file.
+       ========================================================= -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <!-- Store app placeholder ("Mohanad Phone") -->
+    <symbol id="screen-store" viewBox="0 0 240 480">
+      <rect width="240" height="480" fill="#0E1736"/>
+      <rect x="16" y="46" width="112" height="12" rx="6" fill="#E6ECFF"/>
+      <rect x="16" y="66" width="72" height="8" rx="4" fill="#5A6690"/>
+      <circle cx="208" cy="56" r="14" fill="#1A2550"/>
+      <rect x="16" y="92" width="208" height="34" rx="17" fill="#1A2550"/>
+      <circle cx="36" cy="109" r="6" fill="none" stroke="#5A8BFF" stroke-width="2"/>
+      <rect x="50" y="105" width="70" height="8" rx="4" fill="#3A4778"/>
+      <rect x="16" y="140" width="52" height="24" rx="12" fill="#2F6BFF"/>
+      <rect x="76" y="140" width="52" height="24" rx="12" fill="#1A2550"/>
+      <rect x="136" y="140" width="52" height="24" rx="12" fill="#1A2550"/>
+      <rect x="16" y="180" width="98" height="120" rx="14" fill="#16204A"/>
+      <rect x="47" y="192" width="36" height="66" rx="8" fill="#2F6BFF" opacity=".85"/>
+      <rect x="26" y="268" width="60" height="7" rx="3.5" fill="#E6ECFF"/>
+      <rect x="26" y="282" width="34" height="7" rx="3.5" fill="#5A8BFF"/>
+      <rect x="126" y="180" width="98" height="120" rx="14" fill="#16204A"/>
+      <rect x="157" y="192" width="36" height="66" rx="8" fill="#8FB0FF" opacity=".8"/>
+      <rect x="136" y="268" width="60" height="7" rx="3.5" fill="#E6ECFF"/>
+      <rect x="136" y="282" width="34" height="7" rx="3.5" fill="#5A8BFF"/>
+      <rect x="16" y="312" width="98" height="104" rx="14" fill="#16204A"/>
+      <rect x="47" y="324" width="36" height="52" rx="8" fill="#5A8BFF" opacity=".7"/>
+      <rect x="26" y="386" width="60" height="7" rx="3.5" fill="#E6ECFF"/>
+      <rect x="126" y="312" width="98" height="104" rx="14" fill="#16204A"/>
+      <rect x="157" y="324" width="36" height="52" rx="8" fill="#2F6BFF" opacity=".6"/>
+      <rect x="136" y="386" width="60" height="7" rx="3.5" fill="#E6ECFF"/>
+      <rect y="432" width="240" height="48" fill="#0A1230"/>
+      <circle cx="48" cy="456" r="7" fill="#2F6BFF"/><circle cx="104" cy="456" r="7" fill="#3A4778"/>
+      <circle cx="160" cy="456" r="7" fill="#3A4778"/><circle cx="208" cy="456" r="7" fill="#3A4778"/>
+    </symbol>
+
+    <!-- Delivery management placeholder -->
+    <symbol id="screen-delivery" viewBox="0 0 240 480">
+      <rect width="240" height="480" fill="#0E1736"/>
+      <rect x="16" y="46" width="96" height="12" rx="6" fill="#E6ECFF"/>
+      <rect x="16" y="66" width="64" height="8" rx="4" fill="#5A6690"/>
+      <rect x="176" y="46" width="48" height="26" rx="13" fill="#2F6BFF"/>
+      <rect x="16" y="92" width="208" height="168" rx="16" fill="#14204A"/>
+      <g stroke="#243266" stroke-width="1">
+        <path d="M16 134h208M16 176h208M16 218h208M68 92v168M120 92v168M172 92v168"/>
+      </g>
+      <path d="M40 232 L84 196 L120 206 L156 146 L200 122" fill="none" stroke="#5A8BFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 7"/>
+      <path d="M40 232 L84 196 L120 206 L156 146 L200 122" fill="none" stroke="#2F6BFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity=".55"/>
+      <circle cx="40" cy="232" r="8" fill="#0E1736" stroke="#8FB0FF" stroke-width="3"/>
+      <circle cx="200" cy="122" r="10" fill="#2F6BFF"/><circle cx="200" cy="122" r="4" fill="#fff"/>
+      <circle cx="120" cy="206" r="5" fill="#8FB0FF"/>
+      <rect x="16" y="276" width="208" height="44" rx="12" fill="#16204A"/>
+      <circle cx="40" cy="298" r="12" fill="#2F6BFF"/>
+      <rect x="62" y="288" width="74" height="7" rx="3.5" fill="#E6ECFF"/><rect x="62" y="301" width="46" height="6" rx="3" fill="#5A6690"/>
+      <rect x="170" y="290" width="42" height="16" rx="8" fill="#1F3A8C"/>
+      <rect x="16" y="328" width="208" height="44" rx="12" fill="#16204A"/>
+      <circle cx="40" cy="350" r="12" fill="#5A8BFF"/>
+      <rect x="62" y="340" width="64" height="7" rx="3.5" fill="#E6ECFF"/><rect x="62" y="353" width="52" height="6" rx="3" fill="#5A6690"/>
+      <rect x="170" y="342" width="42" height="16" rx="8" fill="#1F3A8C"/>
+      <rect x="16" y="380" width="208" height="44" rx="12" fill="#16204A"/>
+      <circle cx="40" cy="402" r="12" fill="#8FB0FF"/>
+      <rect x="62" y="392" width="80" height="7" rx="3.5" fill="#E6ECFF"/><rect x="62" y="405" width="40" height="6" rx="3" fill="#5A6690"/>
+      <rect x="170" y="394" width="42" height="16" rx="8" fill="#1F3A8C"/>
+      <rect y="432" width="240" height="48" fill="#0A1230"/>
+      <circle cx="48" cy="456" r="7" fill="#3A4778"/><circle cx="104" cy="456" r="7" fill="#2F6BFF"/>
+      <circle cx="160" cy="456" r="7" fill="#3A4778"/><circle cx="208" cy="456" r="7" fill="#3A4778"/>
+    </symbol>
+  </svg>
+
+  <!-- ============================ HEADER ============================ -->
+  <header class="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-navy-950/70 backdrop-blur-xl">
+    <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
+
+      <!-- LOGO AREA
+           Option A (easiest): set CONFIG.logoUrl at the bottom of this file.
+           Option B: replace the <svg> below with <img src="your-logo.svg" alt="Danny logo" class="h-8 w-auto"> -->
+      <a href="#top" id="logo" class="flex items-center gap-3" aria-label="Danny, Applications Developer - home">
+        <span id="logo-mark" class="grid h-9 w-9 place-items-center">
+          <svg viewBox="0 0 36 36" class="h-9 w-9" aria-hidden="true">
+            <rect x="1" y="1" width="34" height="34" rx="9" fill="#0F1A40" stroke="#2F6BFF" stroke-width="1.5"/>
+            <path d="M12 9h6.5c5 0 8.5 3.4 8.5 9s-3.5 9-8.5 9H12z" fill="none" stroke="#fff" stroke-width="2.6" stroke-linejoin="round"/>
+            <circle cx="27" cy="9" r="2.4" fill="#2F6BFF"/>
+          </svg>
+        </span>
+        <span class="leading-tight">
+          <span class="block text-[15px] font-bold tracking-tight text-white">DANNY</span>
+          <span class="block text-xs text-charcoal-400">Applications Developer</span>
+        </span>
+      </a>
+
+      <nav class="hidden items-center gap-8 md:flex" aria-label="Primary">
+        <a href="#projects" class="text-sm font-medium text-slate-300 transition hover:text-white">Projects</a>
+        <a href="#services" class="text-sm font-medium text-slate-300 transition hover:text-white">Services</a>
+        <a href="#stack" class="text-sm font-medium text-slate-300 transition hover:text-white">Tech Stack</a>
+        <a href="#contact" class="text-sm font-medium text-slate-300 transition hover:text-white">Contact</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <a href="#contact" class="glow-btn hidden rounded-xl px-5 py-2.5 text-sm font-semibold sm:inline-block">Get in Touch</a>
+        <button id="menu-btn" class="grid h-10 w-10 place-items-center rounded-lg border border-white/10 text-white md:hidden" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+          <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="mobile-menu" class="hidden border-t border-white/10 bg-navy-950/95 px-5 pb-5 pt-2 md:hidden">
+      <a href="#projects" class="block py-3 text-slate-200">Projects</a>
+      <a href="#services" class="block py-3 text-slate-200">Services</a>
+      <a href="#stack" class="block py-3 text-slate-200">Tech Stack</a>
+      <a href="#contact" class="block py-3 text-slate-200">Contact</a>
+      <a href="#contact" class="glow-btn mt-2 block rounded-xl px-5 py-3 text-center font-semibold">Get in Touch</a>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ============================= HERO ============================= -->
+    <section class="relative overflow-hidden pt-16">
+      <div class="grid-bg pointer-events-none absolute inset-0" aria-hidden="true"></div>
+      <div class="pointer-events-none absolute -right-40 top-10 h-[560px] w-[560px] rounded-full border border-electric/20" aria-hidden="true"></div>
+      <div class="pointer-events-none absolute -right-10 top-40 h-[320px] w-[320px] rounded-full border border-electric/30" aria-hidden="true"></div>
+
+      <div class="relative mx-auto grid max-w-6xl items-center gap-12 px-5 pb-24 pt-16 lg:grid-cols-[1.1fr_.9fr] lg:pb-32 lg:pt-24">
+        <div>
+          <p class="rise d1 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-sm text-slate-300">
+            <span class="h-2 w-2 rounded-full bg-electric shadow-[0_0_10px_#2F6BFF]"></span>
+            Available for new projects
+          </p>
+          <h1 class="rise d2 mt-6 max-w-[16ch] text-5xl font-extrabold leading-[1.02] tracking-tight text-white sm:text-6xl lg:text-7xl">
+            Fast, scalable apps for phones and the web.
+          </h1>
+          <p class="rise d3 mt-6 max-w-xl text-lg leading-relaxed text-slate-300">
+            I'm Danny, an applications developer building high-performance mobile and web solutions. Scalable architecture, clean code, and cross-platform apps that ship from a single codebase.
+          </p>
+          <div class="rise d4 mt-9 flex flex-wrap items-center gap-4">
+            <a href="#projects" class="rounded-xl border border-white/15 bg-white/5 px-6 py-3 font-semibold text-white transition hover:border-electric/60 hover:bg-white/10">View projects</a>
+            <a href="#contact" class="glow-btn rounded-xl px-6 py-3 font-semibold">Get in Touch</a>
+          </div>
+          <ul class="rise d5 mt-10 flex flex-wrap gap-2 text-sm text-slate-300" aria-label="Core technologies">
+            <li class="rounded-lg border border-white/10 bg-charcoal-800/70 px-3 py-1.5">Flutter</li>
+            <li class="rounded-lg border border-white/10 bg-charcoal-800/70 px-3 py-1.5">Dart</li>
+            <li class="rounded-lg border border-white/10 bg-charcoal-800/70 px-3 py-1.5">Supabase</li>
+            <li class="rounded-lg border border-white/10 bg-charcoal-800/70 px-3 py-1.5">Claude AI</li>
+          </ul>
+        </div>
+
+        <!-- Hero device composition (uses the same mockups as the projects) -->
+        <div class="rise d3 relative mx-auto h-[440px] w-full max-w-[420px] sm:h-[520px]" aria-hidden="true">
+          <div class="absolute left-0 top-0 w-[54%]">
+            <div class="phone" data-shot="mohanad">
+              <div class="phone-screen"><svg class="placeholder" viewBox="0 0 240 480"><use href="#screen-store"/></svg></div>
+            </div>
+          </div>
+          <div class="absolute bottom-0 right-0 w-[54%]">
+            <div class="phone" data-shot="delivery">
+              <div class="phone-screen"><svg class="placeholder" viewBox="0 0 240 480"><use href="#screen-delivery"/></svg></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================== PROJECTS =========================== -->
+    <section id="projects" class="mx-auto max-w-6xl px-5 py-24">
+      <div class="max-w-2xl">
+        <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Featured projects</h2>
+        <p class="mt-4 text-lg text-slate-400">Two complete builds, from database design to the app in your hand.</p>
+      </div>
+
+      <div class="mt-14 grid gap-8 lg:grid-cols-2">
+
+        <!-- PROJECT 1: Mohanad Phone -->
+        <article class="flex flex-col overflow-hidden rounded-3xl border border-white/10 bg-charcoal-800/60">
+          <div class="relative grid place-items-center bg-gradient-to-b from-navy-800 to-navy-900 px-6 pb-0 pt-10">
+            <div class="absolute inset-0 grid-bg opacity-60" aria-hidden="true"></div>
+            <!-- PROJECT IMAGE: paste your app screenshot/mockup URL in CONFIG.projects.mohanad.image (bottom of file) -->
+            <div class="phone relative -mb-24 w-[190px] sm:w-[210px]" data-shot="mohanad">
+              <div class="phone-screen"><svg class="placeholder" viewBox="0 0 240 480" role="img" aria-label="Mohanad Phone app mockup placeholder"><use href="#screen-store"/></svg></div>
+            </div>
+          </div>
+          <div class="flex flex-1 flex-col p-7 pt-32 sm:p-9 sm:pt-32">
+            <h3 class="text-2xl font-bold text-white">Mohanad Phone</h3>
+            <p class="mt-2 text-slate-300">A store app for browsing phones, checking live stock and placing orders.</p>
+            <ul class="mt-5 flex flex-wrap gap-2 text-sm" aria-label="Technologies used">
+              <li class="rounded-md bg-electric/15 px-2.5 py-1 text-electric-300">Flutter</li>
+              <li class="rounded-md bg-electric/15 px-2.5 py-1 text-electric-300">Supabase</li>
+              <li class="rounded-md bg-electric/15 px-2.5 py-1 text-electric-300">Claude AI</li>
+              <li class="rounded-md bg-electric/15 px-2.5 py-1 text-electric-300">Web APIs</li>
+            </ul>
+            <!-- EDIT: replace these with the real key features -->
+            <ul class="mt-6 space-y-2.5 text-slate-300">
+              <li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-sm bg-electric"></span>Searchable product catalog with live stock and pricing</li>
+              <li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-sm bg-electric"></span>Secure sign-in and order history</li>
+              <li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-sm bg-electric"></span>AI-assisted product details and customer help</li>
+            </ul>
+            <div class="mt-8">
+              <!-- DEMO LINK: set CONFIG.projects.mohanad.demoUrl (bottom of file) -->
+              <a href="#" data-demo="mohanad" class="glow-btn inline-block rounded-xl px-5 py-2.5 text-sm font-semibold">View demo</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- PROJECT 2: Delivery management system -->
+        <article class="flex flex-col overflow-hidden rounded-3xl border border-white/10 bg-charcoal-800/60">
+          <div class="relative grid place-items-center bg-gradient-to-b from-navy-800 to-navy-900 px-6 pb-0 pt-10">
+            <div class="absolute inset-0 grid-bg opacity-60" aria-hidden="true"></div>
+            <!-- PROJECT IMAGE: paste your app screenshot/mockup URL in CONFIG.projects.delivery.image (bottom of file) -->
+            <div class="phone relative -mb-24 w-[190px] sm:w-[210px]" data-shot="delivery">
+              <div class="phone-screen"><svg class="placeholder" viewBox="0 0 240 480" role="img" aria-label="Delivery management app mockup placeholder"><use href="#screen-delivery"/></svg></div>
+            </div>
+          </div>
+          <div class="flex flex-1 flex-col p-7 pt-32 sm:p-9 sm:pt-32">
+            <h3 class="text-2xl font-bold text-white">Delivery management system</h3>
+            <p class="mt-2 text-slate-300">Separate manager and captain apps that dispatch orders and keep every delivery accounted for.</p>
+            <ul class="mt-5 flex flex-wrap gap-2 text-sm" aria-label="Technologies used">
+              <li class="rounded-md bg-electric/15 px-2.5 py-1 text-electric-300">Flutter</li>
+              <li class="rounded-md bg-electric/15 px-2.5 py-1 text-electric-300">Supabase</li>
+              <li class="rounded-md bg-electric/15 px-2.5 py-1 text-electric-300">Claude AI</li>
+              <li class="rounded-md bg-electric/15 px-2.5 py-1 text-electric-300">Web APIs</li>
+            </ul>
+            <!-- EDIT: replace these with the real key features -->
+            <ul class="mt-6 space-y-2.5 text-slate-300">
+              <li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-sm bg-electric"></span>Manager dashboard to assign and monitor orders</li>
+              <li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-sm bg-electric"></span>Captain app with role-based sign-in</li>
+              <li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-sm bg-electric"></span>Configurable commission rates for each captain</li>
+            </ul>
+            <div class="mt-8">
+              <!-- DEMO LINK: set CONFIG.projects.delivery.demoUrl (bottom of file) -->
+              <a href="#" data-demo="delivery" class="glow-btn inline-block rounded-xl px-5 py-2.5 text-sm font-semibold">View demo</a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- =========================== SERVICES =========================== -->
+    <section id="services" class="border-y border-white/10 bg-navy-900/60">
+      <div class="mx-auto max-w-6xl px-5 py-24">
+        <div class="max-w-2xl">
+          <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Services</h2>
+          <p class="mt-4 text-lg text-slate-400">Everything needed to take an app from idea to the app stores and the browser.</p>
+        </div>
+
+        <div class="mt-14 grid gap-x-16 gap-y-12 md:grid-cols-2">
+          <div class="border-t border-white/15 pt-6">
+            <h3 class="text-xl font-semibold text-white">iOS and Android app development</h3>
+            <p class="mt-3 max-w-md text-slate-400">Native-feeling mobile apps built with Flutter, so one codebase covers both stores without cutting corners on speed.</p>
+          </div>
+          <div class="border-t border-white/15 pt-6">
+            <h3 class="text-xl font-semibold text-white">Cross-platform web applications</h3>
+            <p class="mt-3 max-w-md text-slate-400">Responsive web apps that share logic with your mobile app and run in any modern browser.</p>
+          </div>
+          <div class="border-t border-white/15 pt-6">
+            <h3 class="text-xl font-semibold text-white">Backend and database architecture</h3>
+            <p class="mt-3 max-w-md text-slate-400">Supabase-powered databases, authentication and real-time data, designed to stay quick as your users grow.</p>
+          </div>
+          <div class="border-t border-white/15 pt-6">
+            <h3 class="text-xl font-semibold text-white">Custom UI/UX implementation</h3>
+            <p class="mt-3 max-w-md text-slate-400">Your designs turned into clean, accessible interfaces, or a fresh interface designed around how your customers work.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================== TECH STACK =========================== -->
+    <section id="stack" class="mx-auto max-w-6xl px-5 py-24">
+      <div class="max-w-2xl">
+        <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Tech stack and capabilities</h2>
+        <p class="mt-4 text-lg text-slate-400">The tools I reach for to build, test and ship reliable software.</p>
+      </div>
+
+      <div class="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="tile rounded-2xl border border-white/10 bg-charcoal-800/60 p-6">
+          <svg viewBox="0 0 24 24" class="h-8 w-8 text-electric-400" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M14 3 5 12l3 3 9-9z"/><path d="M8 15l3 3h6l-6-6z"/></svg>
+          <h3 class="mt-5 text-lg font-semibold text-white">Flutter</h3>
+          <p class="mt-1.5 text-slate-400">One codebase for iOS, Android and web.</p>
+        </div>
+        <div class="tile rounded-2xl border border-white/10 bg-charcoal-800/60 p-6">
+          <svg viewBox="0 0 24 24" class="h-8 w-8 text-electric-400" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M4 12 12 4l8 8-8 8z"/><path d="M12 9v6M9 12h6"/></svg>
+          <h3 class="mt-5 text-lg font-semibold text-white">Dart</h3>
+          <p class="mt-1.5 text-slate-400">Typed, fast and easy to keep clean.</p>
+        </div>
+        <div class="tile rounded-2xl border border-white/10 bg-charcoal-800/60 p-6">
+          <svg viewBox="0 0 24 24" class="h-8 w-8 text-electric-400" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg>
+          <h3 class="mt-5 text-lg font-semibold text-white">Supabase</h3>
+          <p class="mt-1.5 text-slate-400">Postgres, auth and real-time data in one backend.</p>
+        </div>
+        <div class="tile rounded-2xl border border-white/10 bg-charcoal-800/60 p-6">
+          <svg viewBox="0 0 24 24" class="h-8 w-8 text-electric-400" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18"/><circle cx="6.5" cy="6.5" r=".6" fill="currentColor"/><circle cx="9" cy="6.5" r=".6" fill="currentColor"/></svg>
+          <h3 class="mt-5 text-lg font-semibold text-white">Web emulators</h3>
+          <p class="mt-1.5 text-slate-400">Test on many screen sizes and devices before release.</p>
+        </div>
+        <div class="tile rounded-2xl border border-white/10 bg-charcoal-800/60 p-6">
+          <svg viewBox="0 0 24 24" class="h-8 w-8 text-electric-400" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7.5" height="7.5" rx="1"/><rect x="13" y="3.5" width="7.5" height="7.5" rx="1"/><rect x="3.5" y="13" width="7.5" height="7.5" rx="1"/><rect x="13" y="13" width="7.5" height="7.5" rx="1"/></svg>
+          <h3 class="mt-5 text-lg font-semibold text-white">Windows and cross-platform tools</h3>
+          <p class="mt-1.5 text-slate-400">Desktop builds and a workflow that runs anywhere.</p>
+        </div>
+        <div class="tile rounded-2xl border border-white/10 bg-charcoal-800/60 p-6">
+          <svg viewBox="0 0 24 24" class="h-8 w-8 text-electric-400" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2z"/></svg>
+          <h3 class="mt-5 text-lg font-semibold text-white">AI integration</h3>
+          <p class="mt-1.5 text-slate-400">Claude-powered features built into your product.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ CONTACT ============================ -->
+    <section id="contact" class="border-t border-white/10 bg-navy-900/60">
+      <div class="mx-auto grid max-w-6xl gap-14 px-5 py-24 lg:grid-cols-[1fr_.8fr]">
+        <div>
+          <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Tell me about your project</h2>
+          <p class="mt-4 max-w-lg text-lg text-slate-400">Share what you want to build and I'll reply with next steps.</p>
+
+          <!-- CONTACT FORM
+               Works out of the box by opening your email app with the message filled in.
+               To receive messages directly instead, see the note in the script at the bottom. -->
+          <form id="contact-form" class="mt-10 space-y-5" novalidate>
+            <div>
+              <label for="name" class="mb-2 block text-sm font-medium text-slate-200">Name</label>
+              <input id="name" name="name" type="text" autocomplete="name" required class="field" placeholder="Your full name" />
+            </div>
+            <div>
+              <label for="email" class="mb-2 block text-sm font-medium text-slate-200">Email</label>
+              <input id="email" name="email" type="email" autocomplete="email" required class="field" placeholder="you@example.com" />
+            </div>
+            <div>
+              <label for="details" class="mb-2 block text-sm font-medium text-slate-200">Project details</label>
+              <textarea id="details" name="details" rows="5" required class="field resize-y" placeholder="What are you building, and when do you need it?"></textarea>
+            </div>
+            <p id="form-status" class="min-h-[1.5rem] text-sm" role="status" aria-live="polite"></p>
+            <button type="submit" class="glow-btn rounded-xl px-7 py-3.5 font-semibold">Send message</button>
+          </form>
+        </div>
+
+        <aside class="lg:pt-2">
+          <h3 class="text-xl font-semibold text-white">Contact directly</h3>
+          <ul class="mt-6 space-y-3">
+            <li>
+              <a href="mailto:dalkhouryhana@gmail.com" class="tile flex items-center gap-4 rounded-2xl border border-white/10 bg-charcoal-800/60 p-4">
+                <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-electric/15 text-electric-300">
+                  <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg>
+                </span>
+                <span class="min-w-0"><span class="block text-sm text-slate-400">Email</span><span class="block truncate font-medium text-white">dalkhouryhana@gmail.com</span></span>
+              </a>
+            </li>
+            <!-- SOCIALS: replace each href with your real profile link, or delete the item -->
+            <li>
+              <a href="https://github.com/your-username" target="_blank" rel="noopener noreferrer" class="tile flex items-center gap-4 rounded-2xl border border-white/10 bg-charcoal-800/60 p-4">
+                <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-electric/15 text-electric-300">
+                  <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14"/></svg>
+                </span>
+                <span><span class="block text-sm text-slate-400">Code</span><span class="block font-medium text-white">GitHub</span></span>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/in/your-username" target="_blank" rel="noopener noreferrer" class="tile flex items-center gap-4 rounded-2xl border border-white/10 bg-charcoal-800/60 p-4">
+                <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-electric/15 text-electric-300">
+                  <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M8 11v5M8 8v.01M12 16v-5m0 2.5c0-1.5 1-2.5 2.3-2.5S16.5 12 16.5 13.5V16"/></svg>
+                </span>
+                <span><span class="block text-sm text-slate-400">Professional</span><span class="block font-medium text-white">LinkedIn</span></span>
+              </a>
+            </li>
+            <li>
+              <a href="https://wa.me/your-number" target="_blank" rel="noopener noreferrer" class="tile flex items-center gap-4 rounded-2xl border border-white/10 bg-charcoal-800/60 p-4">
+                <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-electric/15 text-electric-300">
+                  <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.3-4.2A8 8 0 1 1 8.4 18.8z"/><path d="M9.5 9.5c.3 2 2 3.7 4 4l1-1.2 1.6.8c-.3 1.2-1.3 1.9-2.6 1.6-2.7-.6-4.7-2.6-5.3-5.3-.3-1.3.4-2.3 1.6-2.6l.8 1.6z"/></svg>
+                </span>
+                <span><span class="block text-sm text-slate-400">Chat</span><span class="block font-medium text-white">WhatsApp</span></span>
+              </a>
+            </li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================= FOOTER ============================= -->
+  <footer class="border-t border-white/10 bg-navy-950">
+    <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-5 py-8 text-sm text-slate-400 sm:flex-row">
+      <p>Owned &amp; Developed by Danny | Global Genius</p>
+      <p>&copy; <span id="year">2026</span> All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Small toast used by demo buttons that have no link yet -->
+  <div id="toast" class="pointer-events-none fixed bottom-6 left-1/2 z-[60] -translate-x-1/2 translate-y-4 rounded-xl border border-white/15 bg-charcoal-800 px-5 py-3 text-sm text-white opacity-0 shadow-xl transition duration-300" role="status" aria-live="polite"></div>
+
+  <script>
+    /* =================================================================
+       CONFIG: paste your own assets here. Leave a value empty ("") to
+       keep the built-in placeholder.
+       ================================================================= */
+    const CONFIG = {
+      // Your logo (SVG or PNG). Example: "assets/danny-logo.svg" or a full https:// URL
+      logoUrl: "",
+
+      projects: {
+        // "Mohanad Phone" store app
+        mohanad: {
+          image: "",    // Example: "assets/mohanad-phone.png" (portrait mockup, about 1:2 ratio)
+          demoUrl: ""   // Example: "https://your-demo-link.com"
+        },
+        // Custom delivery management system
+        delivery: {
+          image: "",    // Example: "assets/delivery-app.png"
+          demoUrl: ""
+        }
+      },
+
+      // Contact form: messages open in the visitor's email app addressed to this email.
+      // To receive submissions without an email app, create a free form endpoint
+      // (for example at formspree.io), then set formEndpoint to its URL below.
+      contactEmail: "dalkhouryhana@gmail.com",
+      formEndpoint: ""
+    };
+
+    /* ---------- Apply logo ---------- */
+    (function applyLogo() {
+      if (!CONFIG.logoUrl) return;
+      const mark = document.getElementById("logo-mark");
+      mark.innerHTML = '<img src="' + CONFIG.logoUrl + '" alt="Danny logo" class="h-9 w-auto" />';
+    })();
+
+    /* ---------- Apply project images and demo links ---------- */
+    (function applyProjects() {
+      Object.keys(CONFIG.projects).forEach(function (key) {
+        const cfg = CONFIG.projects[key];
+
+        if (cfg.image) {
+          document.querySelectorAll('[data-shot="' + key + '"] .phone-screen').forEach(function (screen) {
+            screen.innerHTML = '<img src="' + cfg.image + '" alt="" loading="lazy" />';
+          });
+        }
+
+        const demo = document.querySelector('[data-demo="' + key + '"]');
+        if (!demo) return;
+        if (cfg.demoUrl) {
+          demo.href = cfg.demoUrl;
+          demo.target = "_blank";
+          demo.rel = "noopener noreferrer";
+        } else {
+          demo.addEventListener("click", function (e) {
+            e.preventDefault();
+            showToast("The demo for this project is coming soon.");
+          });
+        }
+      });
+    })();
+
+    /* ---------- Toast ---------- */
+    let toastTimer;
+    function showToast(message) {
+      const t = document.getElementById("toast");
+      t.textContent = message;
+      t.classList.remove("opacity-0", "translate-y-4");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () { t.classList.add("opacity-0", "translate-y-4"); }, 2800);
+    }
+
+    /* ---------- Mobile menu ---------- */
+    (function mobileMenu() {
+      const btn = document.getElementById("menu-btn");
+      const menu = document.getElementById("mobile-menu");
+      function setOpen(open) {
+        menu.classList.toggle("hidden", !open);
+        btn.setAttribute("aria-expanded", String(open));
+        btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      }
+      btn.addEventListener("click", function () { setOpen(menu.classList.contains("hidden")); });
+      menu.querySelectorAll("a").forEach(function (a) { a.addEventListener("click", function () { setOpen(false); }); });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape") setOpen(false); });
+    })();
+
+    /* ---------- Contact form ---------- */
+    (function contactForm() {
+      const form = document.getElementById("contact-form");
+      const status = document.getElementById("form-status");
+
+      function setStatus(msg, ok) {
+        status.textContent = msg;
+        status.className = "min-h-[1.5rem] text-sm " + (ok ? "text-electric-300" : "text-red-300");
+      }
+
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const name = form.name.value.trim();
+        const email = form.email.value.trim();
+        const details = form.details.value.trim();
+
+        if (!name || !email || !details) { setStatus("Please fill in your name, email and project details.", false); return; }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setStatus("Please enter a valid email address.", false); return; }
+
+        // Option 1: send to a form endpoint (Formspree or similar) if you set CONFIG.formEndpoint
+        if (CONFIG.formEndpoint) {
+          try {
+            setStatus("Sending...", true);
+            const res = await fetch(CONFIG.formEndpoint, {
+              method: "POST",
+              headers: { "Content-Type": "application/json", "Accept": "application/json" },
+              body: JSON.stringify({ name: name, email: email, message: details })
+            });
+            if (!res.ok) throw new Error("Request failed");
+            form.reset();
+            setStatus("Thanks, your message is sent. I'll reply soon.", true);
+          } catch (err) {
+            setStatus("Your message didn't send. Please email " + CONFIG.contactEmail + " directly.", false);
+          }
+          return;
+        }
+
+        // Option 2 (default): open the visitor's email app with everything filled in
+        const subject = encodeURIComponent("Project enquiry from " + name);
+        const body = encodeURIComponent("Name: " + name + "\nEmail: " + email + "\n\nProject details:\n" + details);
+        window.location.href = "mailto:" + CONFIG.contactEmail + "?subject=" + subject + "&body=" + body;
+        setStatus("Opening your email app. If nothing opens, email " + CONFIG.contactEmail + " directly.", true);
+      });
+    })();
+
+    /* ---------- Footer year ---------- */
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
